@@ -1,0 +1,72 @@
+<Coeur>
+
+    idun: idun
+    idde: idde
+
+    FloatLayout:
+
+        Label:
+            text: root.str_dossiers
+            size_hint: 0.1, 0.1
+            pos_hint: {"x":0.1, "y":0.9}
+
+        Label:
+            text: root.str_dossiers_ina
+            size_hint: 0.1, 0.1
+            pos_hint: {"x":0.4, "y":0.85}
+
+        Label:
+            text: root.str_dossiers_pho
+            size_hint: 0.1, 0.1
+            pos_hint: {"x":0.4, "y":0.8}
+
+        Label:
+            text: root.str_photos
+            size_hint: 0.1, 0.1
+            pos_hint: {"x":0.1, "y":0.65}
+
+        Label:
+            text: root.str_photos_png
+            size_hint: 0.1, 0.1
+            pos_hint: {"x":0.4, "y":0.6}
+
+        Label:
+            text: root.str_photos_jpg
+            size_hint: 0.1, 0.1
+            pos_hint: {"x":0.4, "y":0.55}
+
+        Label:
+            text: root.str_photos_gif
+            size_hint: 0.1, 0.1
+            pos_hint: {"x":0.4, "y":0.50}
+
+        Label:
+            text: root.str_videos_mp4
+            size_hint: 0.1, 0.1
+            pos_hint: {"x":0.4, "y":0.45}
+
+        Label:
+            text: root.str_statut
+            size_hint: 0.1, 0.1
+            pos_hint: {"x":0.1, "y":0.3}
+
+        TextInput:
+            id: idun
+            hint_text: 'Identifiant 1'
+            multiline: False
+            size_hint: 0.13, 0.1
+            pos_hint: {"x":0.85, "y":0.8}
+
+        TextInput:
+            id: idde
+            hint_text: 'Identifiant 2'
+            multiline: False
+            size_hint: 0.13, 0.1
+            pos_hint: {"x":0.85, "y":0.4}
+
+        Button:
+            text: root.str_bouton
+            font_size: 20
+            on_press: root.pressed()
+            size_hint: 1, 0.3
+            pos_hint: {"x":0, "y":0}
