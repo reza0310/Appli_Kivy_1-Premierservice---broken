@@ -4,11 +4,186 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.textinput import TextInput
 from kivy.clock import Clock
 import socket
-import biblio_odaame as bo
 import os
 from threading import Thread
 import sys
 import time
+from random import randint
+
+class bo():
+    def chiffrer(self, A):
+        Liste = []  # Décomposition du message en liste
+        i = 0
+        while i != len(A):
+            Liste.append(A[i])
+            i += 1
+        i = 0
+        while i != len(A):
+            Liste[i] = self.coeur_chiffrer(Liste[i])
+            i += 1
+        A = str()
+        i = 0
+        while i != len(Liste):
+            A = str(A) + str(Liste[i])
+            i += 1
+        i = 0
+        while i != 5:
+            A = self.coeur_chiffrer(A)
+            i += 1
+        return A
+
+    def coeur_chiffrer(self, A):
+        clef_1 = {" ": "n", "é": "!", "a": " ", "b": "l", "c": "X", "d": "w", "e": "R", "f": "s", "g": "é", "h": "2",
+                  "i": "a",
+                  "j": "P", "k": "e", "l": "H", "m": "G", "n": ",", "o": "?", "p": "Y", "q": ".", "r": "1", "s": "0",
+                  "t": "Z",
+                  "u": "c", "v": "S", "w": "t", "x": "I", "y": "|", "z": "'", "'": "q", "A": ":", "B": "/", "C": "U",
+                  "D": "j",
+                  "E": "k", "F": "N", "G": "6", "H": "D", "I": "u", "J": "x", "K": "f", "L": "4", "M": "F", "N": "3",
+                  "O": "Q",
+                  "P": "h", "Q": "K", "R": "W", "S": "y", "T": "9", "U": "p", "W": "5", "X": "-", "Y": "T", "Z": "C",
+                  "(": "z",
+                  "0": "E", "1": "o", "2": "g", "3": "d", "4": "(", "5": "v", "6": "b", "7": "A", "8": "J", "9": "V",
+                  ".": "r",
+                  "?": "O", ")": "i", "!": ")", ",": "M", "/": "L", "V": "\n", "\n": "8", "|": "7", ":": "B", "-": "m"}
+        clef_2 = ['O', 'l', 'm', 'T', 'u', 'p', 'x', 'W', 'P', 'd', 'C', 'a', 'Z', '!', 'Y', '(', 'S', 'D', 'q', 'N',
+                  'g',
+                  '9', '1', 'G', 'R', '0', 't', '.', '8', 'A', '|', 'b', '-', 'F', ',', 'J', 'r', 'E', 'H', 'L', 'e',
+                  '4',
+                  'Q', '/', 'j', '7', '?', 'U', 'i', 'I', '2', 'K', 'y', '3', 'c', 'w', '6', 'B', ':', ' ', 'é', 'h',
+                  ')',
+                  'k', 'v', 'o', 'M', 's', '5', 'f', 'n', "'", "\n", "z", "X", "V"]
+        clef_3 = {"0": "2", "1": "4", "2": "3", "3": "9", "4": "8", "5": "7", "6": "0", "7": "1", "8": "6", "9": "5"}
+        Liste = []  # commencer substitution
+        Liste2 = []
+        i = 0
+        while i != len(A):  # Décomposition du message en liste
+            Liste.append(A[i])
+            i += 1
+        i = 0
+        while i != len(Liste):  # Substitution par liste parallèle avec clef 1
+            mot = Liste[i]
+            Liste2.append(clef_1[mot])
+            i += 1  # fin substitution
+        transpo = randint(10, 70)
+        i = 0
+        Liste = []
+        while i != len(Liste2):
+            index = clef_2.index(Liste2[i])
+            index = index + transpo
+            x = len(Liste)
+            while len(Liste) == x:
+                try:  # Si on va plus loin que la len de la clef on retourne au début
+                    Liste.append(clef_2[index])
+                except:
+                    index -= 76
+            i += 1
+        A = str(transpo)
+        i = 0
+        Liste2 = []
+        while i != 2:  # Décomposition du message en liste
+            Liste2.append(A[i])
+            i += 1
+        i = 0
+        while i != len(Liste2):  # Substitution par liste parallèle avec clef 3
+            mot = Liste2[i]
+            Liste.append(clef_3[mot])
+            i += 1  # fin substitution
+        A = str()
+        i = 0
+        while i != len(Liste):
+            A = str(A) + str(Liste[i])
+            i += 1
+        return A
+
+    def dechiffrer(self, D):
+        i = 0
+        while i != 5:
+            D = self.coeur_dechiffrer(D)
+            i += 1
+        Liste = []  # Décomposition du message en liste
+        Liste2 = []
+        i = 0
+        while i != len(D):
+            Liste.append(D[i])
+            i += 1
+        groupe = ''
+        i = 0
+        while i != len(Liste):
+            groupe = groupe + Liste[i]
+            if len(groupe) == 3:
+                Liste2.append(groupe)
+                groupe = ''
+            i += 1
+        i = 0
+        while i != len(Liste2):
+            Liste2[i] = self.coeur_dechiffrer(Liste2[i])
+            i += 1
+        D = str()
+        i = 0
+        while i != len(Liste2):
+            D = str(D) + str(Liste2[i])
+            i += 1
+        return D
+
+    def coeur_dechiffrer(self, D):
+        clef_2 = ['O', 'l', 'm', 'T', 'u', 'p', 'x', 'W', 'P', 'd', 'C', 'a', 'Z', '!', 'Y', '(', 'S', 'D', 'q', 'N',
+                  'g',
+                  '9', '1', 'G', 'R', '0', 't', '.', '8', 'A', '|', 'b', '-', 'F', ',', 'J', 'r', 'E', 'H', 'L', 'e',
+                  '4',
+                  'Q', '/', 'j', '7', '?', 'U', 'i', 'I', '2', 'K', 'y', '3', 'c', 'w', '6', 'B', ':', ' ', 'é', 'h',
+                  ')',
+                  'k', 'v', 'o', 'M', 's', '5', 'f', 'n', "'", "\n", "z", "X", "V"]
+        clef_4 = {"n": " ", "!": "é", " ": "a", "l": "b", "X": "c", "w": "d", "R": "e", "s": "f", "é": "g", "2": "h",
+                  "a": "i",
+                  "P": "j", "e": "k", "H": "l", "G": "m", ",": "n", "?": "o", "Y": "p", ".": "q", "1": "r", "0": "s",
+                  "Z": "t",
+                  "c": "u", "S": "v", "t": "w", "I": "x", "7": "|", "q": "'", "'": "z", "B": ":", "/": "B", "U": "C",
+                  "j": "D",
+                  "k": "E", "N": "F", "6": "G", "D": "H", "u": "I", "x": "J", "f": "K", "4": "L", "F": "M", "3": "N",
+                  "Q": "O",
+                  "h": "P", "K": "Q", "W": "R", "y": "S", "9": "T", "p": "U", "5": "W", "m": "-", "T": "Y", "C": "Z",
+                  "z": "(",
+                  "E": "0", "o": "1", "g": "2", "d": "3", "(": "4", "v": "5", "b": "6", "A": "7", "J": "8", "V": "9",
+                  "r": ".",
+                  "O": "?", "i": ")", ")": "!", "M": ",", "L": "/", "8": "\n", "\n": "V", "|": "y", ":": "A", "-": "X"}
+        clef_5 = {"0": "6", "1": "7", "2": "0", "3": "2", "4": "1", "5": "9", "6": "8", "7": "5", "8": "4", "9": "3"}
+        Liste = []
+        Liste2 = []
+        i = 0
+        while i != len(D):  # Décomposition du message en liste
+            Liste.append(str(D[i]))
+            i += 1
+        try:
+            Liste[-2] = clef_5[Liste[-2]]
+            Liste[-1] = clef_5[Liste[-1]]
+        except:
+            print(Liste)
+        Transpo = Liste[-2] + Liste[-1]
+        Transpo = int(Transpo)
+        Liste.pop(-1)
+        Liste.pop(-1)
+        i = 0
+        while i != len(Liste):  # Décomposition du message en liste
+            index = clef_2.index(Liste[i])
+            index = index - Transpo
+            if index < 0:
+                index += 76
+            Liste2.append(clef_2[index])
+            i += 1
+        Liste = []
+        i = 0
+        while i != len(Liste2):  # Substitution par liste parallèle avec clef 1
+            mot = Liste2[i]
+            mot = clef_4[mot]
+            Liste.append(mot)
+            i += 1  # fin substitution
+        D = str()
+        i = 0
+        while i != len(Liste):
+            D = str(D) + str(Liste[i])
+            i += 1
+        return D
 
 class Coeur(FloatLayout):
     dossiers = 0
