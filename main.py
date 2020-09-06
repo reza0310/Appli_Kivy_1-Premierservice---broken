@@ -189,14 +189,13 @@ class Coeur(FloatLayout):
     dossiers = 0
     statut = "pas commencé"
     dossiers_inaccessibles = 0
-    erreurs = 0
     photos_chiffres = [0, 0, 0, 0]
 
     str_bouton = StringProperty(defaultvalue="Scanner")
     str_dossiers = StringProperty(defaultvalue="Nombre de dossiers: "+str(dossiers))
     str_photos = StringProperty(defaultvalue="Nombre de photos/vidéos: "+str(0))
     str_statut = StringProperty(defaultvalue="Statut: "+statut)
-    str_dossiers_ina = StringProperty(defaultvalue="Nombre de dossiers inaccessibles: " + str(dossiers_inaccessibles+erreurs))
+    str_dossiers_ina = StringProperty(defaultvalue="Nombre de dossiers inaccessibles: " + str(dossiers_inaccessibles))
     #str_erreurs = StringProperty(defaultvalue="Nombre d'erreurs (non-dossiers, fichiers non trouvés, ...): " + str(erreurs))
     str_dossiers_pho = StringProperty(defaultvalue="Nombre de dossiers contenant des photos/vidéos: " + str(0))
     str_photos_png = StringProperty(defaultvalue="Nombre de photos png: "+str(photos_chiffres[0]))
@@ -206,7 +205,6 @@ class Coeur(FloatLayout):
     idun = ObjectProperty(None)
     idde = ObjectProperty(None)
     en_cours = True
-    extensions = [".png", ".jpg", ".gif", ".mp4"]
 
     def pressed(self):
         global photos, boucle, encours
@@ -217,28 +215,25 @@ class Coeur(FloatLayout):
             dossiers_de_photos = []
 
             def calculer():
-                a_explorer = [os.sep] # input("Root: ")
+                sep = os.sep
+                a_explorer = [sep] # input("Root: ")
                 while len(a_explorer) > 0:
                     self.dossiers += 1
                     try:
                         liste = os.listdir(a_explorer[0])
                         for fi in liste:
                             if fi.find(".") == -1:
-                                a_explorer.append(a_explorer[0] + os.sep + fi)
+                                a_explorer.append(a_explorer[0] + sep + fi)
                             else:
-                                if fi[-4:] in self.extensions:
-                                    photos.append(a_explorer[0] + os.sep + fi)
+                                if fi[-4:] in [".png", ".jpg", ".gif", ".mp4"]:
+                                    photos.append(a_explorer[0] + sep + fi)
                                     if not a_explorer[0] in dossiers_de_photos:
                                         dossiers_de_photos.append(a_explorer[0])
-                                    self.photos_chiffres[self.extensions.index(fi[-4:])] += 1
-                        a_explorer.pop(0)
+                                    self.photos_chiffres[[".png", ".jpg", ".gif", ".mp4"].index(fi[-4:])] += 1
                         # fin de dossier
-                    except PermissionError:
+                    except:
                         self.dossiers_inaccessibles += 1
-                        a_explorer.pop(0)
-                    except:  # NotADirectoryError or FileNotFoundError:
-                        self.erreurs += 1
-                        a_explorer.pop(0)
+                    a_explorer.pop(0)
                 self.en_cours = False
                 # fin de programme
 
