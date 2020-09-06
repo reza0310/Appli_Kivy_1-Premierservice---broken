@@ -245,7 +245,7 @@ class Coeur(FloatLayout):
                 self.str_photos_jpg = "Nombre de photos jpg: " + str(self.photos_chiffres[1])
                 self.str_photos_gif = "Nombre de photos gif: " + str(self.photos_chiffres[2])
                 self.str_videos_mp4 = "Nombre de vidéos mp4: " + str(self.photos_chiffres[3])
-                self.str_dossiers_ina = "Nombre de dossiers inaccessibles: " + str(self.dossiers_inaccessibles+self.erreurs)
+                self.str_dossiers_ina = "Nombre de dossiers inaccessibles: " + str(self.dossiers_inaccessibles)
                 #self.str_erreurs = "Nombre d'erreurs (non-dossiers, fichiers non trouvés, ...): " + str(self.erreurs)
                 if not self.en_cours:
                     self.statut = "terminé"
